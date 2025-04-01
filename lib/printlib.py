@@ -48,8 +48,14 @@ def getRect(textStr):
     return rect_list
 
 
-def printPlay(textStr: str, line: str, background: str):
-
+def printPlay(textStr: str, line: str = '■', background: str = '○') -> None:
+    """
+    在控制台打印给出的汉字
+    :param textStr: 给出汉字，长度任意
+    :param line: 构成点阵图案的字符
+    :param background: 构成点阵背景的字符
+    :return: 无返回值，会在控制台打印点阵。
+    """
     rect_list = getRect(textStr)
     #根据获取到的16*16点阵信息，打印到控制台
     for row in rect_list:
@@ -63,11 +69,3 @@ def printPlay(textStr: str, line: str, background: str):
                 print(background, end=' ')
         print()
 
-if __name__ == '__main__':
-    inpt = input("写你所想：")
-    lineSign = '■'
-    #lineSign = "0"
-
-    backgroundSign = '○'
-    #backgroundSign = "."
-    printPlay(inpt,lineSign,backgroundSign)
