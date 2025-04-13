@@ -11,7 +11,11 @@ def getRect(textStr):
 
     for text in textStr:
         #获取中文的gb2312编码，一个汉字是由2个字节编码组成
-        gb2312 = text.encode('gb2312')
+        # 在此处处理错误
+        try:
+            gb2312 = text.encode('gb2312')
+        except UnicodeEncodeError:
+            raise CharacterError(textStr, text)
         #将二进制编码数据转化为十六进制数据
         hex_str = binascii.b2a_hex(gb2312)
         #将数据按unicode转化为字符串
@@ -48,7 +52,7 @@ def getRect(textStr):
     return rect_list
 
 
-def printPlay(textStr: str, line: str = '■', background: str = '○') -> None:
+def printTextInCil(textStr: str, line: str = '■', background: str = '○') -> None:
     """
     在控制台打印给出的汉字
     :param textStr: 给出汉字，长度任意
@@ -69,3 +73,15 @@ def printPlay(textStr: str, line: str = '■', background: str = '○') -> None:
                 print(background, end=' ')
         print()
 
+
+class CharacterError(Exception):
+    def __init__(self, textStr: str, text: str) -> None:
+        self.textStr = textStr
+        self.text = text
+
+    def __str__(self) -> str:
+        return (f"😱 Character Error: {self.textStr} {self.text}\n"
+                f"❌ 文本「{self.textStr}」中的「{self.text}」无法被转为 GB2312 编码。\n"
+                f"❌ 因此，printPlay 无法将其转为点阵，也无法将其打印。这并非是程序或您的问题。\n"
+                f"✅ 请尝试将「{self.text}」替换成其他文本，并再次尝试。\n"
+                f"👀 注意，「{self.text}」可能并非文本「{self.textStr}」中唯一无法被转为 GB2312 编码的文字。")

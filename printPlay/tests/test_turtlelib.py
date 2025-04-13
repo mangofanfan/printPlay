@@ -4,7 +4,7 @@ import unittest
 
 from PIL import Image
 
-from lib import printTextInTurtleWindow, PrintMode
+from printPlay.flib import printTextInTurtleWindow, PrintMode
 
 
 class TurtleTest(unittest.TestCase):
@@ -34,7 +34,9 @@ class TurtleTest(unittest.TestCase):
                 image = Image.open(f)
             image.save(filePath + ".png")
 
-        except Exception as e:
+        except OSError as e:
+            print("保存测试图像时出现错误，请确认正确安装 Ghostscript 并配置环境变量。")
+            print("本次测试将抛出错误，但这不是代码层面的原因。")
             raise e
 
         finally:
